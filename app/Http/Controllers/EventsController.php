@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\Workshop;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Date;
-
+use DB;
 class EventsController extends BaseController
 {
     public function getWarmupEvents() {
@@ -101,7 +102,17 @@ class EventsController extends BaseController
      */
 
     public function getEventsWithWorkshops() {
-        throw new \Exception('implement in coding task 1');
+        try{
+
+            $workshops = DB::table('workshop')
+            ->join('event', 'id', '=', 'workshop.event_id')
+            ->select('workshop.*')
+            ->get();
+         return $workshops;
+        } catch(\Exception $e){
+            throw new \Exception('implement in coding task 1');
+        }
+        
     }
 
 
@@ -179,6 +190,16 @@ class EventsController extends BaseController
      */
 
     public function getFutureEventsWithWorkshops() {
-        throw new \Exception('implement in coding task 2');
+        try{
+            $workshops = DB::table('workshop')
+            ->join('event', 'id', '=', 'workshop.event_id')
+            ->where('event.start', '>=', date('Y-m-d'))
+            ->select('workshop.*', 'event.*')
+            ->get();
+            
+        } catch(\Exception $e){
+            throw new \Exception('implement in coding task 2');
+        }
+        
     }
 }

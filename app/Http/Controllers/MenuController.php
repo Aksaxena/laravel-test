@@ -93,6 +93,12 @@ class MenuController extends BaseController
      */
 
     public function getMenuItems() {
-        throw new \Exception('implement in coding task 3');
+        try{
+            $items = Menu::tree()->get()->toTree()->paginate(500);;
+            return $items;
+        } catch(\Exception $e) {
+            throw new \Exception('implement in coding task 3');
+        }
+        
     }
 }
